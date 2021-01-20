@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+  stages {
+    stage ('Deploy (udkjn6)') {
+      steps {
+        sh script: '''
+ln -sf /usr/local/bin/helm3 /usr/local/bin/helm
+''', label: 'gr88gx'
+        sh script: 'helm package chart', label: 'ijhrf0'
+        withCredentials([   usernamePassword(credentialsId: '', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+   	script {
+		sh "curl -u$USER:$PASS -T gith6-backend2-chart-0.1.0.tgz 'https://artifactory.dagility.com/artifactory/helm-local/gith6-backend2-chart-0.1.0.tgz' "
+	}
+	script { sh script: 'sleep 0.005', label: '4j2evm'}
+
+}
+        sh script: 'helm repo add gith6-backend2 https://artifactory.dagility.com/artifactory/helm', label: 'rvsu01'
+        sh script: 'helm repo update', label: 'mesfnb'
+        sh script: 'helm upgrade gith6-backend2-deployment gith6-backend2/gith6-backend2-chart --install --values chart-values.yaml --namespace default', label: 'ixxrui'
+      } //end steps
+    } // end stage Deploy
+  }
+}
